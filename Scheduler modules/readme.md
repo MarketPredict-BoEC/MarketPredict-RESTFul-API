@@ -39,5 +39,5 @@ For checking our news data providing services, please refer to TrainingServices 
 
 ### Prediction services
 This services currently available for two categories of Forex and cryptocurrency markets and also four currency pairs of [ EUR_USD , USD_JPY , GBP_USD , BTC_USDT] based on resolution 60 minutes.
-We schedule our prediction services every in business days and POST the predicted values to our Mongo engine services.
-For checking our news data providing services, please refer to predictionServices folder.
+We schedule our prediction services every hours in business days and POST the predicted values to our Mongo engine services.
+For checking our prediction services, please refer to predictionServices folder.
