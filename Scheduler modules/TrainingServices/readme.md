@@ -3,4 +3,4 @@ With these services we schedule our predictive model training every business day
 For checking our news data providing services, please refer to TrainingServices folder.
 
 
-We train our predictive modeles based on **over 2 years** of our news data . 
+We train our predictive models based on **over 2 years** of our news data . 
