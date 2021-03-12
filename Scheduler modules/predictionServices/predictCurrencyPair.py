@@ -21,6 +21,7 @@ def predict_model(category, pair):
     data = {'category': category,
             'pair': pair,
             'timestamp': endDate,
+            'resolution': 60,
             'predictedPrice': pred_train[-1]
             }
     url = 'http://localhost:5000/Robonews/v1/predict'
