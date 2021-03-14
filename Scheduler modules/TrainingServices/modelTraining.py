@@ -49,7 +49,7 @@ def train_model(category, pair):
     combinedInput = concatenate([marketModel.output, BoEC_RCNN.output])
     # x = Dense(2, activation="softmax")(combinedInput)
 
-    x = Dense(1, activation='sigmoid', kernel_regularizer=l2(15e-3), )(combinedInput)
+    x = Dense(1,  kernel_regularizer=l2(15e-3) )(combinedInput)
 
     model = Model(inputs=[marketModel.input, BoEC_RCNN.input], outputs=x)
 
@@ -58,7 +58,6 @@ def train_model(category, pair):
     from tensorflow.keras.optimizers import Adam
     opt = tf.keras.optimizers.Adam(lr=0.001, decay=1e-6)
 
-    '''
     model.compile(
         loss=tf.keras.losses.MeanAbsolutePercentageError(),
         optimizer=opt
@@ -68,6 +67,7 @@ def train_model(category, pair):
     model.compile(loss="binary_crossentropy",
                   optimizer='Adam',
                   metrics=['accuracy'])
+    '''
 
     model.summary()
 
