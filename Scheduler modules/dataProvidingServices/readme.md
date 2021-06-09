@@ -1,1 +1,0 @@
-For checking our news data providing services, please refer to dataProvidingServices folder.
