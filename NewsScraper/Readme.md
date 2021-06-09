@@ -35,7 +35,7 @@ After scraping, we statndard all scraped news based on following attributes. All
  - For news scraping with Google News API, we have limited access to 12 calls per day.  Therefore, I used it within daily scheduling.
  - For some resources such as Cointelegraph, Google News API the news provider did not prepare a keywords list. Thus, I manually determine the news keywords based on occurrences of some known terms such as 'bitcoin' or 'EURUSD' and etc. 
  -  For all newsgroups, I used RSS feed link except FXStreet cryptocurrencies news, which I used direct link scraping of the corresponding [page](https://www.fxstreet.com/cryptocurrencies/news).
- - For Investing news scraping, we need a VPN proxy setting. 
- - Sentiment analysis is done based on our proposed machine learning based FSA method. I used our BOEC text representation method and train the XGBoost sentiment classifier baesd on hourly up/down effect of news on the target market. The currently available model only workd for news with EUR/USD, USD/JPY and BTC/USD keywords. This section needs more validation and should not be used for decision-making supports. 
+  
+ - Sentiment analysis is done based on Pre-trained DistilBERT-based-uncased version. 
  
  
