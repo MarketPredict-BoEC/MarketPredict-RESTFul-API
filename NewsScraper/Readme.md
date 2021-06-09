@@ -1,6 +1,12 @@
 ## News Scraping Service
 
 This service automaticaly connected to the specialized financial news groupes every 60 minutes with scaduler module and scrap the latest news. Then store all scraped news into MongoDB dataset.
+
+For installation :
+
+pip install 
+python run main.py
+
 #### Currenly available resources are:
 
  -  [FXStreet](https://www.fxstreet.com/news) for Forex currency pairs news scraping
