@@ -5,6 +5,7 @@ This service automaticaly connected to the specialized financial news groupes ev
 For installation :
 
 pip install 
+
 python run main.py
 
 #### Currenly available resources are:
