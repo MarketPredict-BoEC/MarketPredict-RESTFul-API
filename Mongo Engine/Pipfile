@@ -12,6 +12,17 @@ flask-apispec = "*"
 apispec = "*"
 flask-restful-swagger = "*"
 flask-restplus = "*"
+fields = "*"
+python-dotenv = "*"
+flask-cors = "*"
+pandas = "*"
+pyecharts = "*"
+plotly = "*"
+requests = "*"
+pandas-datareader = "*"
+dash = "*"
+dash-core-components = "*"
+dash-html-components = "*"
 
 [dev-packages]
 
