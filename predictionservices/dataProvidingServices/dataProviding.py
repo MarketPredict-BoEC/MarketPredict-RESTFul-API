@@ -11,7 +11,7 @@ import ta
 import json
 import numpy as np
 from sklearn import preprocessing
-from NLPtasks import BoEC
+from NLPtasks import BERT_BoEC
 import time
 from datetime import timedelta
 from collections import deque
@@ -189,9 +189,9 @@ def prepaireCandels(category, pair, startDate, endDate, resolution=60, SEQ_LEN=7
     except Exception as err:
         raise errors.DataProvidingException(message="Market Data Failed", code=420)
 
-
+# indicators selected Based on MUtual information and LSTM weighting
 def IndicatorsAddition(df):
-    # df = df.set_index('timestamp')
+
     try:
 
         df = df.drop_duplicates(subset=['timestamp'])
@@ -201,11 +201,6 @@ def IndicatorsAddition(df):
         indicator_bb = ta.volatility.BollingerBands(close=df["Close"], n=20, ndev=2)
 
         df['EMA'] = ta.trend.EMAIndicator(close=df['Close'], n=14, fillna=False).ema_indicator()
-
-        df['MACD'] = ta.trend.MACD(close=df['Close'], n_slow=26, n_fast=12,
-                                   n_sign=9, fillna=False).macd()
-
-        df['RSI'] = ta.momentum.RSIIndicator(close=df['Close'], n=14, fillna=False).rsi()
 
         df['on_balance_volume'] = ta.volume.OnBalanceVolumeIndicator(close=df['Close'], volume=df['Volume'],
                                                                      fillna=False).on_balance_volume()
@@ -315,6 +310,8 @@ def data_collection_service_for_prediction(category, pair, startDate, endDate, n
         raise errors.DataProvidingException(message=er.message)
     except Exception:
         raise errors.DataProvidingException(message="Irregular Error", code=500)
+
+
 # todo : rolling Window Normalization
 def rollingWindowNormalization(marketDF,SEQ_LEN):
     sequential_data = []  # this is a list that will CONTAIN the sequences
@@ -335,9 +332,7 @@ def marketDataTransformation(marketDf, long=False):
         for col in marketDf.columns:  # go through all of the columns
                 if col != "target":  # normalize all ... except for the target itself!
                     marketDf[col] = [float(e) for e in marketDf[col]]
-                    marketDf[col] = marketDf[col].pct_change()  # pct changefor  "normalizes"
                     marketDf = marketDf.replace([np.inf, -np.inf], None)
-                    marketDf.dropna(inplace=True)  # remove the nas created by pct_change
                     marketDf[col] = preprocessing.scale(marketDf[col].values)  # scale between 0 and 1.
 
         marketDf.dropna(inplace=True)  # cleanup again... jic.
@@ -385,13 +380,21 @@ def getNews_embedding(currentDate, df, max_L=15, embedding_dim=210, SEQ_LEN_news
 
 # conceptType ='pair' for concept modeling based on pair and
 # conceptType = 'total' for concept modeling based on total news corpus
-def newsDataTransformation(newsDF, category, pair, conceptType='pair'):
+def newsDataTransformation(newsDF, category, pair, conceptType='pair',Long='False'):
     try:
-        newsDF['vector'] = BoEC.testCaseProcess(newsDF, category, pair, conceptType)
-        print("Total Number of News")
-        log.info("Total Number of News" + str(len(newsDF)))
-        print(len(newsDF))
-        return newsDF
+        if Long:
+            newsDF['vector'] = BERT_BoEC.BoEC_bert(newsDF, category, pair)
+            print("Total Number of News")
+            log.info("Total Number of News" + str(len(newsDF)))
+            print(len(newsDF))
+            return newsDF
+        else:
+            vectors = []
+            for item in newsDF:
+                vectors.append(BERT_BoEC.testCaseVectorization(item,pair))
+            newsDF['vector'] = vectors
+
+
     except:
         raise errors.DataProvidingException(message="Error in News Vectorization", code=500)
 
@@ -408,6 +411,7 @@ def dataAlighnment(marketDF, newsDF, category, pair, Long=False, conceptType='pa
         if not Long:
             marketDF = marketDF[-SEQ_LEN:]
 
+
         aligned_news_data = []
         if len(newsDF) != 0:
             newsDF['Date'] = [datetime.strptime(datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
@@ -415,7 +419,7 @@ def dataAlighnment(marketDF, newsDF, category, pair, Long=False, conceptType='pa
 
             newsDF = newsDF.drop('pubDate', 1)
             newsDF = newsDF.set_index('Date')
-            newsDF = newsDataTransformation(newsDF, category, pair, conceptType)
+            newsDF = newsDataTransformation(newsDF, category, pair, conceptType,Long)
 
         sequential_data = []  # this is a list that will CONTAIN the sequences
         prev_days = deque(maxlen=SEQ_LEN)
