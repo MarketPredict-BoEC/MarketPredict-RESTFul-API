@@ -9,6 +9,7 @@ from matplotlib import pyplot as plt
 import errors
 import pathlib
 Training = True
+from tensorflow.keras.callbacks import EarlyStopping
 
 
 def train_model(category, pair, newsKeywords,
@@ -69,11 +70,11 @@ def train_model(category, pair, newsKeywords,
         )
 
         model.summary()
-        callback = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=5)
+        callback = EarlyStopping(monitor='val_loss', patience=30 , min_delta=0.00001,)
         history = model.fit(
             [train_x, train_news_x], train_y,
             epochs=epoch, batch_size=batch_size,
-            validation_split=0.2)
+            validation_split=0.2,callbacks=[callback])
         plot_loss(history)
         plt.show()
         modelName = pair.upper() + 'WithNewsHourly.h5'
