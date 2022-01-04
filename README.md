@@ -10,3 +10,5 @@ For running this tools, you must install MongoDB at first and then the installat
 Please visit our [paper](https://ieeexplore.ieee.org/abstract/document/9564122) that we presented in [DSAA 2021](https://dsaa2021.dcc.fc.up.pt/) and cite our paper as follow:  
 
 S. A. Farimani, M. V. Jahan, A. M. Fard and G. Haffari, "Leveraging Latent Economic Concepts and Sentiments in the News for Market Prediction," 2021 IEEE 8th International Conference on Data Science and Advanced Analytics (DSAA), 2021, pp. 1-10, doi: 10.1109/DSAA53316.2021.9564122.
+
+Our video presentation in this venue is available [here](https://drive.google.com/file/d/1nvSQCjfTsZL33k8HSV27DjGENqj2MaLN/view).
